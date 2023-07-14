@@ -1,0 +1,34 @@
+name: "Hiber3D Publish"
+description: "Action that uploads HDK worlds to hiberworld.com"
+branding:
+  icon: "code"
+  color: "red"
+
+inputs:
+  world:
+    description: "Local world folder name"
+    required: false
+    default: "."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Building ${{ inputs.world }}
+      shell: bash
+      working-directory: ./${{ inputs.world }}
+      env:
+        CLOSE_ON_SAVE: true
+      run: |
+        yarn
+        yarn dev &
+
+    - name: "Generating world"
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/dist/index.js
+
+    - name: Publishing ${{ inputs.world }}
+      shell: bash
+      working-directory: ./${{ inputs.world }}
+      run: |
+        yarn upload
