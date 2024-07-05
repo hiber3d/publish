@@ -14,9 +14,12 @@ setTimeout(() => {
 const cwd = __dirname + "/..";
 
 const open = async () => {
-  console.log("Opening page...");
+
 
   const browser = await puppeteer.launch();
+
+  console.log("Browser launched." + await browser.version());
+
   const page = await browser.newPage();
 
   page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
@@ -64,7 +67,7 @@ const open = async () => {
 
 const npmPromise = new Promise<void>((resolve) => {
   exec(
-    `cd ${cwd} && npm i && cd ./node_modules/puppeteer && npm run postinstall`,
+    `cd ${cwd} && npm i && node node_modules/puppeteer/install.mjs`,
     (
       error: import("child_process").ExecException | null,
       stdout: string,
@@ -116,8 +119,8 @@ const npmPromise = new Promise<void>((resolve) => {
   // console.log("Waiting for listing...");
   // await lsPromise;
 
-  console.log("Waiting for install...");
-  await npmPromise;
+  // console.log("Waiting for install...");
+  // await npmPromise;
 
   console.log("Opening page...");
   await open();
