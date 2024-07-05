@@ -11,14 +11,12 @@ setTimeout(() => {
   exit(1);
 }, 180000);
 
-const cwd = __dirname + "/..";
 
 const open = async () => {
 
-
   const browser = await puppeteer.launch();
 
-  console.log("Browser launched." + await browser.version());
+  console.log("--- launching " + await browser.version());
 
   const page = await browser.newPage();
 
@@ -65,49 +63,6 @@ const open = async () => {
   }
 };
 
-const npmPromise = new Promise<void>((resolve) => {
-  exec(
-    `cd ${cwd} && npm i && node node_modules/puppeteer/install.mjs`,
-    (
-      error: import("child_process").ExecException | null,
-      stdout: string,
-      stderr: string
-    ): void => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      resolve();
-    }
-  );
-});
-
-// const lsPromise = new Promise<void>((resolve) => {
-//   exec(
-//     `cd ${cwd} && ls`,
-//     (
-//       error: import("child_process").ExecException | null,
-//       stdout: string,
-//       stderr: string
-//     ): void => {
-//       if (error) {
-//         console.log(`error: ${error.message}`);
-//         return;
-//       }
-//       if (stderr) {
-//         console.log(`stderr: ${stderr}`);
-//         return;
-//       }
-//       console.log(`stdout: ${stdout}`);
-//       resolve();
-//     }
-//   );
-// });
 
 (async () => {
   if(fs.existsSync('scene.json'))
@@ -116,12 +71,5 @@ const npmPromise = new Promise<void>((resolve) => {
     exec('rm scene.json');
   }
 
-  // console.log("Waiting for listing...");
-  // await lsPromise;
-
-  // console.log("Waiting for install...");
-  // await npmPromise;
-
-  console.log("Opening page...");
   await open();
 })();
