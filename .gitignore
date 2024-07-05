@@ -1,7 +1,5 @@
 node_modules
 .env
 scene.json
-yarn.lock
-package-lock.json
 
 

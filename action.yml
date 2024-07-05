@@ -19,8 +19,8 @@ runs:
       env:
         CLOSE_ON_SAVE: true
       run: |
-        yarn
-        yarn dev &
+        npm
+        npm run dev &
 
     - name: "Generating world"
       shell: bash
@@ -31,4 +31,4 @@ runs:
       shell: bash
       working-directory: ./${{ inputs.world }}
       run: |
-        yarn upload
+        npm run upload
